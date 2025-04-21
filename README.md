@@ -26,7 +26,13 @@ This is the backend API for **Claimant Portal**, a secure and scalable system de
 
 ## 📁 Project Structure
 
-ClaimantPortal.API/ │ ├── Controllers/ # API Controllers (e.g., AuthController, ContactUsController) ├── Models/ # Request/response models ├── Services/ # Business logic and helpers ├── appsettings.json # Configuration settings ├── Program.cs # Entry point └── Startup.cs # Middleware and service setup
+ClaimPortal.API/ │
+    ├── Controllers/ # API Controllers (e.g., UserController) 
+    ├── Models/ # Request/response models 
+    ├── Services/ # Business logic and helpers 
+    ├── appsettings.json # Configuration settings 
+    ├── Program.cs # Entry point 
+└── Startup.cs # Middleware and service setup
 
 yaml
 Copy
