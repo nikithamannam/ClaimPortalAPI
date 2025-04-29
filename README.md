@@ -80,7 +80,6 @@ Passwords are hashed using SHA-256
 
 JWT-based stateless authentication
 
-SQL injection prevented using stored procedures
 
 📜 License
 MIT License – feel free to use, modify, and contribute.
