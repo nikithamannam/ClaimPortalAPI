@@ -32,7 +32,7 @@ ClaimPortal.API/ │
     ├── Services/ # Business logic and helpers 
     ├── appsettings.json # Configuration settings 
     ├── Program.cs # Entry point 
-└── Startup.cs # Middleware and service setup
+└── Startup.cs # Middleware and service setup 
 
 yaml
 Copy
