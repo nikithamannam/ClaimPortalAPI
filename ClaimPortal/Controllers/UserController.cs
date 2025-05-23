@@ -96,7 +96,7 @@ namespace ClaimPortal.Controllers
             };
 
             cmd.Parameters.AddWithValue("@Email", login.Email);
-            cmd.Parameters.AddWithValue("@Password", hashedPassword);
+            cmd.Parameters.AddWithValue("@Password", login.Password);
 
             // Add return value parameter
             var returnValue = cmd.Parameters.Add("@ReturnVal", SqlDbType.Int);
@@ -352,6 +352,80 @@ namespace ClaimPortal.Controllers
 
         }
 
+        [HttpGet("Policies/{userId}")]
+        public IActionResult GetPolicies(int userId)
+        {
+            try
+            {
+                using var conn = _dbHelper.GetConnection();
+                conn.Open();
+                using var cmd = new SqlCommand("GetPoliciesByUserId", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.AddWithValue("@UserId", userId);
+
+                var policies = new List<object>();
+                using var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    policies.Add(new
+                    {
+                        PolicyId = reader["PolicyId"],
+                        PolicyNumber = reader["PolicyNumber"].ToString(),
+                        ProductName = reader["ProductName"].ToString(),
+                        LeadInsured = reader["LeadInsured"].ToString(),
+                        Dependants = reader["Dependants"].ToString(),
+                        Organization = reader["Organization"].ToString()
+                    });
+                }
+                return Ok(policies);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error retrieving policies", error = ex.Message });
+            }
+        }
+
+        [HttpGet("Claims/{userId}")]
+        public IActionResult GetClaims(int userId)
+        {
+            try
+            {
+                using var conn = _dbHelper.GetConnection();
+                conn.Open();
+                using var cmd = new SqlCommand("GetClaimsByUserId", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.AddWithValue("@UserId", userId);
+
+                var claims = new List<object>();
+                using var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    claims.Add(new
+                    {
+                        ClaimId = reader["ClaimId"],
+                        ClaimNumber = reader["ClaimNumber"].ToString(),
+                        PolicyNumber = reader["PolicyNumber"].ToString(),
+                        SubmittedDate = reader["SubmittedDate"] != DBNull.Value ? Convert.ToDateTime(reader["SubmittedDate"]).ToString("yyyy-MM-dd") : "",
+                        Status = reader["Status"].ToString(),
+                        Amount = reader["Amount"] != DBNull.Value ? Convert.ToDecimal(reader["Amount"]) : 0
+                    });
+                }
+                return Ok(claims);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error retrieving claims", error = ex.Message });
+            }
+        }
+
+
     }
 
+
 }
+
+
